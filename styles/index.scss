@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+* {
+    font-family: 'Roboto';
+    transition: 0.3s ease;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    
+    main {
+        max-width: 450px;
+        margin: 100px auto;
+        padding: 0px 100px;
+
+        section {
+            div {
+                &:nth-child(1) {
+                    h1 {
+                        font-weight: bold;
+                        font-size: larger;
+                        text-align: center;
+                    }
+                    p {
+                        font-weight: lighter;
+                        font-size: smaller;
+                        text-align: center;
+                    }
+                }
+            }
+            form {
+                margin: 25px 0px;
+
+                .label-box {
+                    margin: 15px 40px;
+
+                    input {
+                        margin: 10px 0px;
+                        padding: 5px 0px;
+                        width: 100%;
+                        border: 2px solid grey;
+                        border-radius: 8px;
+
+                        &:focus {
+                            border: 2px solid white;
+                            background-color: gray;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    }
+                }
+                .button-box {
+                    text-align: center;
+
+                    button {
+                        background-color: gray;
+                        border: 1px solid gray;
+                        border-radius: 8px;
+                        padding: 10px 25px;
+                        color: white;
+
+                        &:hover {
+                            background-color: white;
+                            color: grey;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+        .signup-link {
+            font-size: smaller;
+            font-weight: lighter;
+            text-align: center;
+            a {
+                text-decoration: none;
+
+                &:visited {
+                    color: blue;
+                }
+            }
+        }
+    }
+}
+
+.log-success {
+    div {
+        &:nth-child(2) {
+            h3 {
+                text-align: center;
+                font-size: larger;
+            }
+            p{
+                font-size: large;
+            }
+        }
+    }
+}
+
+#err-msg {
+    text-align: center;
+    background-color: rgba(255,0,0,0.3);
+    width: 50%;
+    margin: auto;
+    border: 1px solid none;
+    border-radius: 12px;
+
+    span {
+        color: red;
+        padding: 20px 0px;
+    }
+}
+
+#val-msg {
+    text-align: center;
+    background-color: rgba(0,128,0,0.3);
+    width: 50%;
+    margin: auto;
+    border: 1px solid none;
+    border-radius: 12px;
+
+    span {
+        color: green;
+        padding: 20px 0px;
+    }
+}

@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+* {
+  font-family: "Roboto";
+  transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+body main {
+  max-width: 450px;
+  margin: 100px auto;
+  padding: 0px 100px;
+}
+body main section div:nth-child(1) h1 {
+  font-weight: bold;
+  font-size: larger;
+  text-align: center;
+}
+body main section div:nth-child(1) p {
+  font-weight: lighter;
+  font-size: smaller;
+  text-align: center;
+}
+body main section form {
+  margin: 25px 0px;
+}
+body main section form .label-box {
+  margin: 15px 40px;
+}
+body main section form .label-box input {
+  margin: 10px 0px;
+  padding: 5px 0px;
+  width: 100%;
+  border: 2px solid grey;
+  border-radius: 8px;
+}
+body main section form .label-box input:focus {
+  border: 2px solid white;
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+}
+body main section form .button-box {
+  text-align: center;
+}
+body main section form .button-box button {
+  background-color: gray;
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 10px 25px;
+  color: white;
+}
+body main section form .button-box button:hover {
+  background-color: white;
+  color: grey;
+  font-weight: bold;
+}
+body main .signup-link {
+  font-size: smaller;
+  font-weight: lighter;
+  text-align: center;
+}
+body main .signup-link a {
+  text-decoration: none;
+}
+body main .signup-link a:visited {
+  color: blue;
+}
+
+.log-success div:nth-child(2) h3 {
+  text-align: center;
+  font-size: larger;
+}
+.log-success div:nth-child(2) p {
+  font-size: large;
+}
+
+#err-msg {
+  text-align: center;
+  background-color: rgba(255, 0, 0, 0.3);
+  width: 50%;
+  margin: auto;
+  border: 1px solid none;
+  border-radius: 12px;
+}
+#err-msg span {
+  color: red;
+  padding: 20px 0px;
+}
+
+#val-msg {
+  text-align: center;
+  background-color: rgba(0, 128, 0, 0.3);
+  width: 50%;
+  margin: auto;
+  border: 1px solid none;
+  border-radius: 12px;
+}
+#val-msg span {
+  color: green;
+  padding: 20px 0px;
+}
