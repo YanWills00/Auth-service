@@ -107,7 +107,7 @@ function checkData(e) {
                 password: validPassword
             };
 
-            await fetch('http://localhost:3000/validateInfo', {
+            await fetch('http://localhost:3000/signUp', {
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",

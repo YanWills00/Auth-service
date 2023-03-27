@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
-const sessions = require('express-session');
-const cookieParser = require('cookie-parser');
+const eValidator = require('email-validator');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -27,25 +26,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'styles')));
 app.use(express.static(path.join(__dirname, 'views/scripts')));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(sessions({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true, maxAge: 60000 }
-}));
 
 let results;
 let token;
 
 app.get('/', (req, res) => {
-    if (req.session.user) {
-        res.session.destroy();
-    }
     res.render('index');
 });
 
-app.post('/validateLogin', (req, res) => {
+app.post('/signIn', (req, res) => {
 
     db.query("SELECT * FROM accounts WHERE username=? OR email=?",
         [req.body.username, req.body.username],
@@ -55,13 +44,15 @@ app.post('/validateLogin', (req, res) => {
                     console.log(err);
                 }
                 res.json({ status: "failed", message: "Account doesn't exist or password misspelled !" });
+                return;
             } else {
 
                 if (result) {
                     const auth = await bcrypt.compare(req.body.password, result[0].password);
 
                     if (!auth) {
-                        throw Error('invalid Password');
+                        res.json({ status: "failed", message: "Account doesn't exist or password misspelled !" });
+                        return;
                     }
                 }
 
@@ -90,42 +81,67 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
-app.post('/validateInfo', async (req, res) => {
+app.post('/signUp', (req, res) => {
 
-    let password;
+    let userExist = 0;
 
-    const salt = await bcrypt.genSalt();
-    password = await bcrypt.hash(req.body.password, salt);
-
-    setTimeout(() => {
-
-        try {
-            token = jwt.sign(
-                { user: req.body.username, email: password },
-                "secretkeyjwt",
-                { expiresIn: 3600 }
-            );
-
-        } catch (err) {
-
-            console.log(err);
-        }
-
-        let userId = uuid.v4();
-        console.log(userId);
-
-        db.query("INSERT INTO accounts(ID, username, email, password, token) VALUES(?,?,?,?,?)",
-            [userId, req.body.username, req.body.email, password, token],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                    throw new Error('Unable to register user at the moment, please try again later');
-                } else {
-                    res.json({ status: "success", message: "Account successfully created" });
+    db.query("SELECT username, email FROM accounts",
+        (err, result) => {
+            for (let i = 0; i < result.length; i++) {
+                if (result[i].username == req.body.username || result[i].email == req.body.email) {
+                    userExist = 1;
                 }
-            });
+            }
+        }
+    );
 
-    }, 400)
+    setTimeout(async () => {
+
+        if (userExist == 0) {
+
+            if (!eValidator.validate(req.body.email)) {
+                res.json({ status: "failed", message: "Invalid Email !!!" });
+                return;
+            }
+
+            let password;
+
+            const salt = await bcrypt.genSalt();
+            password = await bcrypt.hash(req.body.password, salt);
+
+            try {
+                token = jwt.sign(
+                    { user: req.body.username, email: password },
+                    "secretkeyjwt",
+                    { expiresIn: 3600 }
+                );
+
+            } catch (err) {
+
+                console.log(err);
+            }
+
+            let userId = uuid.v4();
+
+            db.query("INSERT INTO accounts(ID, username, email, password, token) VALUES(?,?,?,?,?)",
+                [userId, req.body.username, req.body.email, password, token],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        throw new Error('Unable to register user at the moment, please try again later');
+                    } else {
+                        res.json({ status: "success", message: "Account successfully created" });
+                        return;
+                    }
+                }
+            );
+        } else {
+            res.json({ status: "failed", message: "Account with credentials already used !!!" });
+            return;
+        }
+    }, 500)
+
+
 
 });
 
